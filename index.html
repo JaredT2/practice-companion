@@ -101,6 +101,7 @@ svg.chord .lit circle{fill:#e8b56a}
 svg.chord .dim{opacity:.22}
 .chordbtns{display:flex;gap:.4rem;margin-top:.8rem;flex-wrap:wrap}
 .chordbtns .btn{flex:1;min-width:6.5rem}
+.hint{font-size:.78rem;color:var(--bone-dim);margin:.7rem 0 0;line-height:1.45}
 
 /* ---------- week strip: deliberately not button-like ---------- */
 .week{margin:.4rem 0 1.6rem}
@@ -187,46 +188,63 @@ const CHORDS = {
    AUDIO — plucked string synthesis. No sound files to host.
    ============================================================ */
 const Strings = {
-  ctx:null,
+  ctx:null, unlocked:false,
   ready(){
     if(!this.ctx){
       const C = window.AudioContext || window.webkitAudioContext;
       if(!C) return null;
       this.ctx = new C();
     }
-    if(this.ctx.state === 'suspended') this.ctx.resume();
     return this.ctx;
+  },
+  /* iOS starts every audio context suspended and only wakes it inside a
+     real user gesture. Play one silent sample on first touch to wake it. */
+  unlock(){
+    if(this.unlocked) return;
+    const ctx=this.ready(); if(!ctx) return;
+    const b=ctx.createBuffer(1,1,22050);
+    const s=ctx.createBufferSource(); s.buffer=b;
+    s.connect(ctx.destination); s.start(0);
+    if(ctx.state==='suspended') ctx.resume();
+    this.unlocked=true;
   },
   /* Karplus-Strong: noise through a delay line that averages
      neighbouring samples. Sounds like a plucked string. */
   pluck(freq, delay=0, dur=2.2, vol=.45){
     const ctx=this.ready(); if(!ctx) return;
-    const sr=ctx.sampleRate;
-    const N=Math.max(2,Math.round(sr/freq));
-    const len=Math.floor(sr*dur);
-    const buf=ctx.createBuffer(1,len,sr);
-    const out=buf.getChannelData(0);
-    const ring=new Float32Array(N);
-    for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
-    let p=0;
-    for(let i=0;i<len;i++){
-      const cur=ring[p], nxt=ring[(p+1)%N];
-      out[i]=cur;
-      ring[p]=(cur+nxt)*0.5*0.9965;
-      p=(p+1)%N;
-    }
-    const src=ctx.createBufferSource(); src.buffer=buf;
-    const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3400;
-    const g=ctx.createGain();
-    const t=ctx.currentTime+delay;
-    g.gain.setValueAtTime(0,t);
-    g.gain.linearRampToValueAtTime(vol,t+0.006);
-    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-    src.connect(lp).connect(g).connect(ctx.destination);
-    src.start(t); src.stop(t+dur);
+    const fire=()=>{
+      const sr=ctx.sampleRate;
+      const N=Math.max(2,Math.round(sr/freq));
+      const len=Math.floor(sr*dur);
+      const buf=ctx.createBuffer(1,len,sr);
+      const out=buf.getChannelData(0);
+      const ring=new Float32Array(N);
+      for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+      let p=0;
+      for(let i=0;i<len;i++){
+        const cur=ring[p], nxt=ring[(p+1)%N];
+        out[i]=cur;
+        ring[p]=(cur+nxt)*0.5*0.9965;
+        p=(p+1)%N;
+      }
+      const src=ctx.createBufferSource(); src.buffer=buf;
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3400;
+      const g=ctx.createGain();
+      const t=ctx.currentTime+delay;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(vol,t+0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      src.connect(lp).connect(g).connect(ctx.destination);
+      src.start(t); src.stop(t+dur);
+    };
+    if(ctx.state==='running') fire();
+    else ctx.resume().then(fire).catch(()=>{});
   },
   hz(stringIndex, fret){ return STRING_HZ[stringIndex]*Math.pow(2,fret/12); },
+  touchDevice(){ return navigator.maxTouchPoints>1 || /iPhone|iPad|iPod|Android/.test(navigator.userAgent); },
 };
+['touchend','pointerdown','click'].forEach(ev=>
+  document.addEventListener(ev, ()=>Strings.unlock(), {once:true, passive:true}));
 
 /* ============================================================
    DEMO DATA
@@ -361,6 +379,7 @@ function chordCard(name){
       <button class="btn ghost small" data-act="each">String by string</button>
       <button class="btn ghost small" data-act="show">Show me how</button>
     </div>
+    <p class="hint" data-hint hidden>Heard nothing? The silent switch on the side of your phone mutes this kind of sound, even when everything else plays.</p>
   </figure>`;
 }
 
@@ -375,6 +394,11 @@ function wireChords(root){
     const reset=()=>say(name,'Numbers are which finger presses where. A circle on top means play that string open, a cross means skip it.');
     const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
     const strum=(vol=.36)=>{ let d=0; c.frets.forEach((f,i)=>{ if(f<0) return; Strings.pluck(Strings.hz(i,f),d,2.4,vol); d+=0.035; }); };
+    const hint=card.querySelector('[data-hint]');
+    card.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
+      Strings.unlock();
+      if(hint && Strings.touchDevice()) hint.hidden=false;
+    }));
 
     card.querySelector('[data-act="hear"]').onclick=()=>{
       clearAll(); say(name,'All the strings together, the way you would strum it.');
