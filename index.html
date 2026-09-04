@@ -10,24 +10,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --wood:#221a14;
-  --wood-2:#2e241c;
-  --wood-3:#3a2e24;
-  --bone:#ece2d2;
-  --bone-dim:#9b8f80;
-  --bronze:#c99248;
-  --sage:#7fa07a;
-  --flag:#c05a45;
+  --wood:#221a14; --wood-2:#2e241c; --wood-3:#3a2e24;
+  --bone:#ece2d2; --bone-dim:#9b8f80;
+  --bronze:#c99248; --sage:#7fa07a; --flag:#c05a45;
   --line:rgba(236,226,210,.13);
-  --tap:2.75rem;
+  --tap:2.9rem;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--wood);color:var(--bone);
   font-family:"Familjen Grotesk",system-ui,-apple-system,sans-serif;
-  font-size:1rem;line-height:1.5;
-  -webkit-font-smoothing:antialiased;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
 }
 button{font:inherit;color:inherit;cursor:pointer}
 input,textarea,select{font:inherit}
@@ -35,176 +29,210 @@ input,textarea,select{font:inherit}
 :focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 
 .app{max-width:34rem;margin-inline:auto;min-height:100dvh;display:flex;flex-direction:column}
-
-/* ---- top ---- */
 .bar{
-  display:flex;align-items:center;gap:.75rem;
-  padding:1rem 1.15rem .85rem;border-bottom:1px solid var(--line);
-  position:sticky;top:0;background:var(--wood);z-index:10;
+  display:flex;align-items:center;gap:.7rem;
+  padding:.9rem 1.15rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--wood);z-index:20;
 }
-.bar h1{font-size:1.02rem;font-weight:700;letter-spacing:-.015em;margin:0;flex:1}
+.bar h1{font-size:1rem;font-weight:700;letter-spacing:-.015em;margin:0;flex:1}
 .bar .who{font-size:.8rem;color:var(--bone-dim)}
-.iconbtn{
-  background:none;border:1px solid var(--line);border-radius:2px;
-  padding:.3rem .6rem;font-size:.8rem;color:var(--bone-dim);
-}
-.iconbtn:hover{color:var(--bone);border-color:var(--bone-dim)}
-
 main{flex:1;padding:1.15rem 1.15rem 4rem}
 
-/* ---- type ---- */
 h2{font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin:0 0 .3rem}
-h3{font-size:1rem;font-weight:600;margin:0 0 .3rem}
-.sub{color:var(--bone-dim);font-size:.9rem;margin:0 0 1.5rem}
-.eyebrow{color:var(--bronze);font-size:.82rem;font-weight:600;margin:0 0 .35rem}
+.sub{color:var(--bone-dim);font-size:.9rem;margin:0 0 1.4rem}
+.eyebrow{color:var(--bronze);font-size:.82rem;font-weight:600;margin:2rem 0 .5rem}
 
-/* ---- buttons ---- */
+/* ---------- one button system, used everywhere ---------- */
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-height:var(--tap);padding:0 1.1rem;
-  background:var(--bronze);color:#241a10;border:0;border-radius:2px;
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  min-height:var(--tap);padding:0 1rem;
+  background:var(--bronze);color:#241a10;border:1px solid var(--bronze);border-radius:3px;
   font-weight:600;font-size:.95rem;
 }
-.btn:hover{background:#dba556}
-.btn.ghost{background:none;border:1px solid var(--line);color:var(--bone)}
-.btn.ghost:hover{border-color:var(--bone-dim)}
+.btn:hover{background:#dba556;border-color:#dba556}
+.btn.ghost{background:var(--wood-2);color:var(--bone);border-color:rgba(236,226,210,.3)}
+.btn.ghost:hover{border-color:var(--bone);background:var(--wood-3)}
+.btn.small{min-height:2.3rem;padding:0 .75rem;font-size:.85rem}
 .btn.wide{width:100%}
-.btn[disabled]{opacity:.45;cursor:default}
+.btn .arrow{font-size:1.05em;line-height:1}
+.btnrow{display:flex;gap:.5rem;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem}
+.backbar{margin-bottom:1.2rem}
 
-/* ---- lists ---- */
+/* ---------- navigable rows ---------- */
 .row{
   display:flex;align-items:center;gap:.9rem;width:100%;
-  padding:.95rem 0;background:none;border:0;border-bottom:1px solid var(--line);
-  text-align:left;
+  padding:.95rem .75rem;background:var(--wood-2);
+  border:1px solid var(--line);border-radius:3px;margin-bottom:.5rem;text-align:left;
 }
-.row:first-of-type{border-top:1px solid var(--line)}
+.row.static{cursor:default}
 .row .grow{flex:1;min-width:0}
-.row .name{font-weight:600;font-size:1rem}
-.row .note{color:var(--bone-dim);font-size:.85rem;margin-top:.1rem}
-.row .chev{color:var(--bone-dim);font-size:1.1rem}
-.row:hover .name{color:var(--bronze)}
+.row .name{font-weight:600;display:block}
+.row .note{color:var(--bone-dim);font-size:.85rem;display:block;margin-top:.1rem}
+.row .arrow{color:var(--bronze);font-size:1.15rem;line-height:1}
+button.row:hover{border-color:var(--bone-dim);background:var(--wood-3)}
 
-.pill{
-  display:inline-block;font-size:.72rem;font-weight:600;
-  padding:.1rem .45rem;border:1px solid currentColor;border-radius:2px;
-}
-.pill.hard{color:var(--flag)}
-.pill.ok{color:var(--bone-dim)}
-.pill.easy{color:var(--sage)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:.1rem .45rem;border:1px solid currentColor;border-radius:2px}
+.pill.hard{color:var(--flag)} .pill.ok{color:var(--bone-dim)}
 
-/* ---- practice item ---- */
-.item{border-bottom:1px solid var(--line);padding:1.1rem 0}
-.item:first-of-type{border-top:1px solid var(--line)}
+/* ---------- practice item ---------- */
+.item{border-top:1px solid var(--line);padding:1.2rem 0}
 .item .title{font-weight:600;margin-bottom:.15rem}
-.item .detail{color:var(--bone-dim);font-size:.9rem;margin-bottom:.75rem}
+.item .detail{color:var(--bone-dim);font-size:.9rem;margin-bottom:.85rem}
 .feels{display:flex;gap:.5rem;flex-wrap:wrap}
 .feel{
-  flex:1;min-width:5rem;min-height:var(--tap);
-  background:none;border:1px solid var(--line);border-radius:2px;
-  color:var(--bone-dim);font-size:.88rem;font-weight:600;
+  flex:1;min-width:5.5rem;min-height:var(--tap);
+  background:var(--wood-2);border:1px solid rgba(236,226,210,.3);border-radius:3px;
+  color:var(--bone);font-size:.88rem;font-weight:600;
 }
-.feel:hover{border-color:var(--bone-dim);color:var(--bone)}
-.feel[aria-pressed="true"]{background:var(--wood-3);color:var(--bone);border-color:var(--bone-dim)}
+.feel:hover{background:var(--wood-3)}
+.feel[aria-pressed="true"]{background:var(--wood-3);border-width:2px}
 .feel[data-feel="easy"][aria-pressed="true"]{color:var(--sage);border-color:var(--sage)}
+.feel[data-feel="ok"][aria-pressed="true"]{color:var(--bronze);border-color:var(--bronze)}
 .feel[data-feel="hard"][aria-pressed="true"]{color:var(--flag);border-color:var(--flag)}
 
-/* ---- chord ---- */
-.chordwrap{display:flex;gap:1.1rem;align-items:flex-start;margin:.5rem 0 .9rem}
-.chordwrap figcaption{font-size:.85rem;color:var(--bone-dim);padding-top:.4rem}
-svg.chord{background:var(--wood-2);border:1px solid var(--line);border-radius:2px;flex:none}
+/* ---------- chord card ---------- */
+.chordcard{background:var(--wood-2);border:1px solid var(--line);border-radius:3px;padding:.9rem;margin:0 0 .9rem}
+.chordtop{display:flex;gap:1rem;align-items:flex-start}
+.chordtop .caption{flex:1;font-size:.85rem;color:var(--bone-dim);min-height:4rem}
+.chordtop .caption b{color:var(--bone);font-weight:600;display:block;margin-bottom:.2rem}
+svg.chord{flex:none;display:block}
+svg.chord .lit circle{fill:#e8b56a}
+svg.chord .dim{opacity:.22}
+.chordbtns{display:flex;gap:.4rem;margin-top:.8rem;flex-wrap:wrap}
+.chordbtns .btn{flex:1;min-width:6.5rem}
 
-/* ---- forms ---- */
+/* ---------- week strip: deliberately not button-like ---------- */
+.week{margin:.4rem 0 1.6rem}
+.week .days{display:flex;gap:.35rem}
+.week .day{flex:1;text-align:center}
+.week .dot{height:.6rem;border-radius:1px;background:rgba(236,226,210,.12);margin-bottom:.3rem}
+.week .day.on .dot{background:var(--bronze)}
+.week .day.today .dot{outline:1px solid var(--bone-dim);outline-offset:1px}
+.week .lbl{font-size:.68rem;color:var(--bone-dim);line-height:1.25}
+.week .day.on .lbl{color:var(--bone)}
+.week figcaption{font-size:.78rem;color:var(--bone-dim);margin-top:.55rem}
+
 label{display:block;font-size:.85rem;color:var(--bone-dim);margin:1rem 0 .3rem;font-weight:500}
-input[type=text],input[type=email],input[type=password],textarea,select{
+input[type=text],textarea,select{
   width:100%;min-height:var(--tap);padding:.6rem .75rem;
-  background:var(--wood-2);color:var(--bone);
-  border:1px solid var(--line);border-radius:2px;
+  background:var(--wood-2);color:var(--bone);border:1px solid rgba(236,226,210,.25);border-radius:3px;
 }
-textarea{min-height:5rem;resize:vertical;line-height:1.5}
+textarea{min-height:5rem;resize:vertical}
 input:focus,textarea:focus,select:focus{border-color:var(--bronze);outline:none}
 
-.card{background:var(--wood-2);border:1px solid var(--line);padding:1rem;margin-bottom:1rem}
-.card h3{margin-bottom:.4rem}
+.card{background:var(--wood-2);border:1px solid var(--line);border-radius:3px;padding:1rem;margin-bottom:1rem}
 .card p{margin:0;color:var(--bone-dim);font-size:.9rem}
+.empty{padding:2rem 0;color:var(--bone-dim)}
+.empty strong{display:block;color:var(--bone);margin-bottom:.3rem}
+.banner{background:var(--wood-2);border-bottom:1px solid var(--line);padding:.5rem 1.15rem;font-size:.8rem;color:var(--bone-dim);display:flex;gap:.7rem;align-items:center;justify-content:center}
+.banner b{color:var(--bronze)}
 
-.empty{padding:2.5rem 0;color:var(--bone-dim);font-size:.95rem}
-.empty strong{display:block;color:var(--bone);font-weight:600;margin-bottom:.3rem}
-
-.banner{
-  background:var(--wood-2);border-bottom:1px solid var(--line);
-  padding:.55rem 1.15rem;font-size:.8rem;color:var(--bone-dim);text-align:center;
+/* ---------- reference page ---------- */
+.ref{margin-bottom:2.5rem}
+.ref p{font-size:.92rem;color:var(--bone-dim);max-width:36ch}
+.ref svg{margin-bottom:.6rem}
+.legend{display:flex;flex-direction:column;gap:.7rem;margin-top:.9rem}
+.legend div{display:flex;gap:.7rem;align-items:center;font-size:.88rem;color:var(--bone-dim)}
+.legend .key{
+  flex:none;width:2.2rem;height:2.2rem;border:1px solid var(--line);border-radius:3px;
+  background:var(--wood-2);display:flex;align-items:center;justify-content:center;font-weight:700;
 }
-.banner b{color:var(--bronze);font-weight:600}
-
-.streak{display:flex;gap:.4rem;margin:.6rem 0 1.5rem}
-.streak i{
-  flex:1;height:2.4rem;background:var(--wood-2);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;
-  font-style:normal;font-size:.7rem;color:var(--bone-dim);
-}
-.streak i.on{background:var(--wood-3);border-color:var(--bronze);color:var(--bronze)}
-
-.stack{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem}
-.backlink{
-  background:none;border:0;padding:0;color:var(--bronze);
-  font-weight:600;font-size:.9rem;margin-bottom:1.1rem;
-}
-.backlink:hover{color:var(--bone)}
-
-.builder{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
-.fingerpick{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem}
-.fingerpick button{
-  width:2.2rem;height:2.2rem;background:var(--wood-2);
-  border:1px solid var(--line);border-radius:50%;font-size:.85rem;font-weight:600;
-}
-.fingerpick button[aria-pressed="true"]{background:var(--bronze);color:var(--wood);border-color:var(--bronze)}
-@media(max-width:26rem){ .builder{grid-template-columns:1fr} }
 @media(prefers-reduced-motion:no-preference){
-  .row,.feel,.btn{transition:color .12s ease,border-color .12s ease,background .12s ease}
+  .btn,.row,.feel{transition:background .12s ease,border-color .12s ease,color .12s ease}
+  svg.chord g,svg.chord circle,svg.chord text{transition:opacity .18s ease}
 }
 </style>
 </head>
 <body>
-
 <div class="app">
   <div id="banner"></div>
   <div class="bar">
     <h1>Practice Companion</h1>
     <span class="who" id="who"></span>
-    <button class="iconbtn" id="signout" hidden>Sign out</button>
+    <button class="btn ghost small" id="signout" hidden>Sign out</button>
   </div>
   <main id="view"></main>
 </div>
 
 <script type="module">
 /* ============================================================
-   CONFIG
-   Leave as null to run on demo data with no setup.
-   To go live: paste your Firebase config object here.
+   CONFIG — leave null to run on demo data with no setup
    ============================================================ */
 const FIREBASE_CONFIG = null;
 
 /* ============================================================
-   CHORD LIBRARY
-   frets: one entry per string, low E first. -1 = don't play, 0 = open
-   fingers: which finger presses it. 0 = none
+   GUITAR FACTS
+   Arrays run low E first, which is left to right in a chord box.
+   STANDARD NUMBERING: string 1 is the THINNEST, string 6 the thickest.
+   Teach it the other way round? Reverse STRING_LABEL and nothing else.
    ============================================================ */
+const STRING_HZ    = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63];
+const STRING_LABEL = ['6th','5th','4th','3rd','2nd','1st'];
+const STRING_NOTE  = ['low E','A','D','G','B','high E'];
+const FINGER_NAME  = {1:'index',2:'middle',3:'ring',4:'little'};
+
 const CHORDS = {
-  Em:  {frets:[0,2,2,0,0,0],  fingers:[0,2,3,0,0,0]},
-  Am:  {frets:[-1,0,2,2,1,0], fingers:[0,0,2,3,1,0]},
-  D:   {frets:[-1,-1,0,2,3,2],fingers:[0,0,0,1,3,2]},
-  G:   {frets:[3,2,0,0,0,3],  fingers:[3,2,0,0,0,4]},
-  C:   {frets:[-1,3,2,0,1,0], fingers:[0,3,2,0,1,0]},
-  E:   {frets:[0,2,2,1,0,0],  fingers:[0,3,4,1,0,0]},
-  A:   {frets:[-1,0,2,2,2,0], fingers:[0,0,1,2,3,0]},
-  Dm:  {frets:[-1,-1,0,2,3,1],fingers:[0,0,0,2,3,1]},
+  Em:{frets:[0,2,2,0,0,0],  fingers:[0,2,3,0,0,0]},
+  Am:{frets:[-1,0,2,2,1,0], fingers:[0,0,2,3,1,0]},
+  D: {frets:[-1,-1,0,2,3,2],fingers:[0,0,0,1,3,2]},
+  G: {frets:[3,2,0,0,0,3],  fingers:[3,2,0,0,0,4]},
+  C: {frets:[-1,3,2,0,1,0], fingers:[0,3,2,0,1,0]},
+  E: {frets:[0,2,2,1,0,0],  fingers:[0,3,4,1,0,0]},
+  A: {frets:[-1,0,2,2,2,0], fingers:[0,0,1,2,3,0]},
+  Dm:{frets:[-1,-1,0,2,3,1],fingers:[0,0,0,2,3,1]},
+};
+
+/* ============================================================
+   AUDIO — plucked string synthesis. No sound files to host.
+   ============================================================ */
+const Strings = {
+  ctx:null,
+  ready(){
+    if(!this.ctx){
+      const C = window.AudioContext || window.webkitAudioContext;
+      if(!C) return null;
+      this.ctx = new C();
+    }
+    if(this.ctx.state === 'suspended') this.ctx.resume();
+    return this.ctx;
+  },
+  /* Karplus-Strong: noise through a delay line that averages
+     neighbouring samples. Sounds like a plucked string. */
+  pluck(freq, delay=0, dur=2.2, vol=.45){
+    const ctx=this.ready(); if(!ctx) return;
+    const sr=ctx.sampleRate;
+    const N=Math.max(2,Math.round(sr/freq));
+    const len=Math.floor(sr*dur);
+    const buf=ctx.createBuffer(1,len,sr);
+    const out=buf.getChannelData(0);
+    const ring=new Float32Array(N);
+    for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+    let p=0;
+    for(let i=0;i<len;i++){
+      const cur=ring[p], nxt=ring[(p+1)%N];
+      out[i]=cur;
+      ring[p]=(cur+nxt)*0.5*0.9965;
+      p=(p+1)%N;
+    }
+    const src=ctx.createBufferSource(); src.buffer=buf;
+    const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3400;
+    const g=ctx.createGain();
+    const t=ctx.currentTime+delay;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(vol,t+0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    src.connect(lp).connect(g).connect(ctx.destination);
+    src.start(t); src.stop(t+dur);
+  },
+  hz(stringIndex, fret){ return STRING_HZ[stringIndex]*Math.pow(2,fret/12); },
 };
 
 /* ============================================================
    DEMO DATA
    ============================================================ */
 function demoSeed(){
-  const day = d => new Date(Date.now() - d*864e5).toISOString().slice(0,10);
+  const day=d=>new Date(Date.now()-d*864e5).toISOString().slice(0,10);
   return {
     users:{
       t1:{id:'t1',role:'teacher',name:'Jared'},
@@ -213,35 +241,32 @@ function demoSeed(){
       s3:{id:'s3',role:'student',name:'Wei Lin',teacherId:'t1',started:'2 weeks ago'},
     },
     lessons:[
-      {id:'l1',studentId:'s3',date:day(4),summary:
-        'First proper chord shapes. Fingertips are going to hurt this week and that is normal. Five minutes at a time, stop before it stings.',
-       items:[
-        {id:'i1',title:'Em, hold and release',detail:'Place it, strum once, take your hand off. Twenty times.',chord:'Em'},
-        {id:'i2',title:'Am, hold and release',detail:'Same thing. Check the first string is ringing clear.',chord:'Am'},
-        {id:'i3',title:'Fingertip conditioning',detail:'Five minutes maximum per session. Two sessions a day beats one long one.'},
-       ]},
-      {id:'l2',studentId:'s1',date:day(3),summary:
-        'Changing between chords is the whole game now. Speed comes later, accuracy first.',
-       items:[
-        {id:'i4',title:'Em to Am, slowly',detail:'Four beats on each. Metronome at 60.',chord:'Am'},
-        {id:'i5',title:'D chord, one string at a time',detail:'Play each string on its own and find the buzzing one.',chord:'D'},
-        {id:'i6',title:'Down-strums on the beat',detail:'Just Em. Keep your wrist loose.'},
-       ]},
-      {id:'l3',studentId:'s2',date:day(6),summary:
-        'You are ready for full songs. G is the last shape you need for most of them.',
-       items:[
-        {id:'i7',title:'G chord shape',detail:'Fourth finger on the first string. It will feel wrong for a week.',chord:'G'},
-        {id:'i8',title:'C to G change',detail:'The trick is the third finger barely moves.',chord:'C'},
-       ]},
+      {id:'l1',studentId:'s3',date:day(4),summary:'First proper chord shapes. Your fingertips will hurt this week and that is normal. Five minutes at a time, stop before it stings.',
+        items:[
+          {id:'i1',title:'Em, hold and release',detail:'Place it, strum once, take your hand off. Twenty times.',chord:'Em'},
+          {id:'i2',title:'Am, hold and release',detail:'Same thing. Check every string rings clear.',chord:'Am'},
+          {id:'i3',title:'Fingertip conditioning',detail:'Five minutes maximum. Two short sessions beat one long one.'},
+        ]},
+      {id:'l2',studentId:'s1',date:day(3),summary:'Changing between chords is the whole game now. Accuracy first, speed arrives on its own.',
+        items:[
+          {id:'i4',title:'Em to Am, slowly',detail:'Four beats on each. Metronome at 60.',chord:'Am'},
+          {id:'i5',title:'D chord, one string at a time',detail:'Play each string on its own and find the one that buzzes.',chord:'D'},
+          {id:'i6',title:'Down-strums on the beat',detail:'Just Em. Keep your wrist loose.'},
+        ]},
+      {id:'l3',studentId:'s2',date:day(6),summary:'You are ready for full songs. G is the last shape you need for most of them.',
+        items:[
+          {id:'i7',title:'G chord shape',detail:'Little finger on the thinnest string. It will feel wrong for about a week.',chord:'G'},
+          {id:'i8',title:'C to G change',detail:'The trick is that your ring finger barely moves.',chord:'C'},
+        ]},
     ],
     logs:[
       {id:'g1',studentId:'s3',itemId:'i1',date:day(3),feel:'ok',note:''},
-      {id:'g2',studentId:'s3',itemId:'i2',date:day(3),feel:'hard',note:'my first string keeps buzzing'},
+      {id:'g2',studentId:'s3',itemId:'i2',date:day(3),feel:'hard',note:'my 1st string keeps buzzing'},
       {id:'g3',studentId:'s3',itemId:'i3',date:day(3),feel:'hard',note:'fingers really sore'},
       {id:'g4',studentId:'s3',itemId:'i1',date:day(2),feel:'easy',note:''},
       {id:'g5',studentId:'s3',itemId:'i2',date:day(2),feel:'hard',note:'still buzzing'},
       {id:'g6',studentId:'s1',itemId:'i4',date:day(2),feel:'ok',note:''},
-      {id:'g7',studentId:'s1',itemId:'i5',date:day(2),feel:'hard',note:'third string is dead'},
+      {id:'g7',studentId:'s1',itemId:'i5',date:day(2),feel:'hard',note:'3rd string is dead'},
       {id:'g8',studentId:'s1',itemId:'i5',date:day(1),feel:'hard',note:''},
       {id:'g9',studentId:'s1',itemId:'i6',date:day(1),feel:'easy',note:''},
       {id:'g10',studentId:'s2',itemId:'i7',date:day(2),feel:'ok',note:''},
@@ -251,192 +276,304 @@ function demoSeed(){
 
 /* ============================================================
    STORE
-   Demo mode keeps everything in localStorage.
-   Firebase mode is wired to the same method names.
    ============================================================ */
-const KEY = 'practice-companion-demo';
-
-const Store = {
-  live:false, data:null, uid:null,
-
+const KEY='practice-companion-demo';
+const Store={
+  live:false,data:null,uid:null,
   async init(){
     if(FIREBASE_CONFIG){ await this.initFirebase(); return; }
-    const saved = localStorage.getItem(KEY);
-    this.data = saved ? JSON.parse(saved) : demoSeed();
-    this.uid = localStorage.getItem(KEY+'-uid');
+    const saved=localStorage.getItem(KEY);
+    this.data=saved?JSON.parse(saved):demoSeed();
+    this.uid=localStorage.getItem(KEY+'-uid');
   },
   async initFirebase(){
-    const app = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-    const auth = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const fs   = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    this.fb = {app:app.initializeApp(FIREBASE_CONFIG)};
-    this.fb.auth = auth.getAuth(this.fb.app);
-    this.fb.db = fs.getFirestore(this.fb.app);
-    this.fb.mod = {auth, fs};
-    this.live = true;
+    const a =await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const au=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const fs=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    this.fb={app:a.initializeApp(FIREBASE_CONFIG)};
+    this.fb.auth=au.getAuth(this.fb.app);
+    this.fb.db=fs.getFirestore(this.fb.app);
+    this.live=true;
   },
-  save(){ if(!this.live) localStorage.setItem(KEY, JSON.stringify(this.data)); },
-
-  me(){ return this.data.users[this.uid] || null; },
-  signInAs(id){ this.uid = id; localStorage.setItem(KEY+'-uid', id); },
-  signOut(){ this.uid = null; localStorage.removeItem(KEY+'-uid'); },
-
-  students(teacherId){
-    return Object.values(this.data.users).filter(u => u.role==='student' && u.teacherId===teacherId);
-  },
-  lessonsFor(studentId){
-    return this.data.lessons.filter(l => l.studentId===studentId)
-      .sort((a,b)=> b.date.localeCompare(a.date));
-  },
-  latestLesson(studentId){ return this.lessonsFor(studentId)[0] || null; },
-  logsFor(studentId){ return this.data.logs.filter(l => l.studentId===studentId); },
-
-  logPractice(studentId,itemId,feel,note){
-    const today = new Date().toISOString().slice(0,10);
-    const found = this.data.logs.find(l=>l.studentId===studentId&&l.itemId===itemId&&l.date===today);
-    if(found){ found.feel=feel; found.note=note; }
-    else this.data.logs.push({id:'g'+Date.now(),studentId,itemId,date:today,feel,note});
+  save(){ if(!this.live) localStorage.setItem(KEY,JSON.stringify(this.data)); },
+  me(){ return this.data.users[this.uid]||null; },
+  signInAs(id){ this.uid=id; localStorage.setItem(KEY+'-uid',id); },
+  signOut(){ this.uid=null; localStorage.removeItem(KEY+'-uid'); },
+  students(t){ return Object.values(this.data.users).filter(u=>u.role==='student'&&u.teacherId===t); },
+  lessonsFor(s){ return this.data.lessons.filter(l=>l.studentId===s).sort((a,b)=>b.date.localeCompare(a.date)); },
+  latestLesson(s){ return this.lessonsFor(s)[0]||null; },
+  logsFor(s){ return this.data.logs.filter(l=>l.studentId===s); },
+  logPractice(s,itemId,feel,note){
+    const today=new Date().toISOString().slice(0,10);
+    const f=this.data.logs.find(l=>l.studentId===s&&l.itemId===itemId&&l.date===today);
+    if(f){ f.feel=feel; f.note=note; }
+    else this.data.logs.push({id:'g'+Date.now(),studentId:s,itemId,date:today,feel,note});
     this.save();
   },
-  addLesson(lesson){
-    lesson.id = 'l'+Date.now();
-    this.data.lessons.push(lesson);
-    this.save();
-  },
-  reset(){ localStorage.removeItem(KEY); localStorage.removeItem(KEY+'-uid'); location.reload(); },
+  addLesson(l){ l.id='l'+Date.now(); this.data.lessons.push(l); this.save(); },
+  seenRef(){ return localStorage.getItem(KEY+'-ref')==='1'; },
+  markRef(){ localStorage.setItem(KEY+'-ref','1'); },
+  reset(){ [KEY,KEY+'-uid',KEY+'-ref'].forEach(k=>localStorage.removeItem(k)); location.reload(); },
 };
 
 /* ============================================================
    CHORD DIAGRAM
    ============================================================ */
-function chordSVG(name, size=1){
-  const c = CHORDS[name];
-  if(!c) return '';
-  const W=104*size, H=124*size, padX=16*size, padY=26*size;
-  const stringGap=(W-padX*2)/5, fretGap=(H-padY-14*size)/4;
-  let s=`<svg class="chord" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${name} chord diagram">`;
-  s+=`<rect x="${padX}" y="${padY}" width="${W-padX*2}" height="${fretGap*4}" fill="none" stroke="rgba(236,226,210,.28)" stroke-width="1"/>`;
-  for(let f=1;f<4;f++)
-    s+=`<line x1="${padX}" y1="${padY+fretGap*f}" x2="${W-padX}" y2="${padY+fretGap*f}" stroke="rgba(236,226,210,.18)"/>`;
-  for(let n=1;n<5;n++)
-    s+=`<line x1="${padX+stringGap*n}" y1="${padY}" x2="${padX+stringGap*n}" y2="${padY+fretGap*4}" stroke="rgba(236,226,210,.18)"/>`;
-  s+=`<line x1="${padX}" y1="${padY}" x2="${W-padX}" y2="${padY}" stroke="#ece2d2" stroke-width="${3*size}"/>`;
+let seq=0;
+function chordSVG(name,scale=1){
+  const c=CHORDS[name]; if(!c) return '';
+  const W=112*scale,H=138*scale,padX=18*scale,padY=32*scale;
+  const sg=(W-padX*2)/5, fg=(H-padY-18*scale)/4;
+  let s=`<svg class="chord" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${name} chord shape">`;
+  s+=`<rect x="${padX}" y="${padY}" width="${W-padX*2}" height="${fg*4}" fill="none" stroke="rgba(236,226,210,.25)"/>`;
+  for(let f=1;f<4;f++) s+=`<line x1="${padX}" y1="${padY+fg*f}" x2="${W-padX}" y2="${padY+fg*f}" stroke="rgba(236,226,210,.16)"/>`;
+  for(let n=0;n<6;n++){
+    const x=padX+sg*n;
+    s+=`<line x1="${x}" y1="${padY}" x2="${x}" y2="${padY+fg*4}" stroke="rgba(236,226,210,.2)" stroke-width="${(1.4-n*0.16)*scale}"/>`;
+  }
+  s+=`<line x1="${padX}" y1="${padY}" x2="${W-padX}" y2="${padY}" stroke="#ece2d2" stroke-width="${3*scale}"/>`;
   c.frets.forEach((fret,i)=>{
-    const x=padX+stringGap*i;
-    if(fret===-1) s+=`<text x="${x}" y="${padY-8*size}" text-anchor="middle" fill="#9b8f80" font-size="${11*size}" font-family="Familjen Grotesk,sans-serif">&#215;</text>`;
-    else if(fret===0) s+=`<circle cx="${x}" cy="${padY-11*size}" r="${4*size}" fill="none" stroke="#9b8f80" stroke-width="1.4"/>`;
+    const x=padX+sg*i;
+    if(fret===-1)
+      s+=`<text class="mark" data-s="${i}" x="${x}" y="${padY-10*scale}" text-anchor="middle" fill="#9b8f80" font-size="${13*scale}" font-family="Familjen Grotesk,sans-serif">&#215;</text>`;
+    else if(fret===0)
+      s+=`<circle class="mark" data-s="${i}" cx="${x}" cy="${padY-13*scale}" r="${4.5*scale}" fill="none" stroke="#9b8f80" stroke-width="1.5"/>`;
     else{
-      const y=padY+fretGap*(fret-0.5);
-      s+=`<circle cx="${x}" cy="${y}" r="${8*size}" fill="#c99248"/>`;
-      const fg=c.fingers[i];
-      if(fg) s+=`<text x="${x}" y="${y+4*size}" text-anchor="middle" fill="#221a14" font-size="${10*size}" font-weight="700" font-family="Familjen Grotesk,sans-serif">${fg}</text>`;
+      const y=padY+fg*(fret-0.5);
+      s+=`<g class="mark" data-s="${i}" data-finger="${c.fingers[i]}">
+        <circle cx="${x}" cy="${y}" r="${9*scale}" fill="#c99248"/>
+        <text x="${x}" y="${y+4*scale}" text-anchor="middle" fill="#221a14" font-size="${11*scale}" font-weight="700" font-family="Familjen Grotesk,sans-serif">${c.fingers[i]}</text>
+      </g>`;
     }
   });
-  s+=`<text x="${W/2}" y="${H-2*size}" text-anchor="middle" fill="#ece2d2" font-size="${12*size}" font-weight="600" font-family="Familjen Grotesk,sans-serif">${name}</text>`;
+  s+=`<text x="${W/2}" y="${H-3*scale}" text-anchor="middle" fill="#ece2d2" font-size="${13*scale}" font-weight="600" font-family="Familjen Grotesk,sans-serif">${name}</text>`;
   return s+'</svg>';
+}
+
+function chordCard(name){
+  return `<figure class="chordcard" data-chordcard="${name}" data-uid="c${++seq}">
+    <div class="chordtop">
+      ${chordSVG(name)}
+      <figcaption class="caption" data-cap><b>${name}</b>Numbers are which finger presses where. A circle on top means play that string open, a cross means skip it.</figcaption>
+    </div>
+    <div class="chordbtns">
+      <button class="btn ghost small" data-act="hear">Hear it</button>
+      <button class="btn ghost small" data-act="each">String by string</button>
+      <button class="btn ghost small" data-act="show">Show me how</button>
+    </div>
+  </figure>`;
+}
+
+function wireChords(root){
+  root.querySelectorAll('[data-chordcard]').forEach(card=>{
+    const name=card.dataset.chordcard, c=CHORDS[name];
+    const cap=card.querySelector('[data-cap]');
+    const marks=[...card.querySelectorAll('.mark')];
+    let timers=[];
+    const clearAll=()=>{ timers.forEach(clearTimeout); timers=[]; marks.forEach(m=>m.classList.remove('lit','dim')); };
+    const say=(t,b)=>{ cap.innerHTML=`<b>${t}</b>${b}`; };
+    const reset=()=>say(name,'Numbers are which finger presses where. A circle on top means play that string open, a cross means skip it.');
+    const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
+    const strum=(vol=.36)=>{ let d=0; c.frets.forEach((f,i)=>{ if(f<0) return; Strings.pluck(Strings.hz(i,f),d,2.4,vol); d+=0.035; }); };
+
+    card.querySelector('[data-act="hear"]').onclick=()=>{
+      clearAll(); say(name,'All the strings together, the way you would strum it.');
+      strum(); at(2600,reset);
+    };
+
+    card.querySelector('[data-act="each"]').onclick=()=>{
+      clearAll();
+      let step=0;
+      c.frets.forEach((f,i)=>{
+        at(step*800,()=>{
+          marks.forEach(m=>{ m.classList.remove('lit'); m.classList.toggle('dim', m.dataset.s!=i); });
+          if(f<0){
+            say(name,`${STRING_LABEL[i]} string, ${STRING_NOTE[i]} &mdash; not played in this chord.`);
+            return;
+          }
+          const m=marks.find(m=>m.dataset.s==i);
+          if(m){ m.classList.remove('dim'); m.classList.add('lit'); }
+          Strings.pluck(Strings.hz(i,f),0,2.0,.45);
+          say(name,`${STRING_LABEL[i]} string, ${STRING_NOTE[i]} &mdash; ${f===0?'played open, nothing pressed.':'pressed at fret '+f+'.'} Listen for a clear ring, not a buzz.`);
+        });
+        step++;
+      });
+      at(step*800+900,()=>{ clearAll(); reset(); });
+    };
+
+    card.querySelector('[data-act="show"]').onclick=()=>{
+      clearAll();
+      const pressed=c.frets.map((f,i)=>({i,f,fg:c.fingers[i]})).filter(x=>x.f>0).sort((a,b)=>a.fg-b.fg);
+      if(!pressed.length){ say(name,'Nothing to press. Every string in this shape is played open.'); at(3200,reset); return; }
+      marks.forEach(m=>m.classList.add('dim'));
+      pressed.forEach((p,n)=>{
+        at(n*1700,()=>{
+          const m=marks.find(m=>m.dataset.s==p.i&&m.dataset.finger==p.fg);
+          if(m){ m.classList.remove('dim'); m.classList.add('lit'); }
+          Strings.pluck(Strings.hz(p.i,p.f),0,1.4,.3);
+          say(`Finger ${p.fg}, your ${FINGER_NAME[p.fg]}`,
+              `goes on the ${STRING_LABEL[p.i]} string (${STRING_NOTE[p.i]}) at fret ${p.f}. Press just behind the metal fret, not on top of it.`);
+        });
+      });
+      at(pressed.length*1700,()=>{
+        marks.forEach(m=>m.classList.remove('dim'));
+        say('All together now','That is the whole shape. Strum it and check every string rings.');
+        strum(.34);
+      });
+      at(pressed.length*1700+3000,()=>{ clearAll(); reset(); });
+    };
+  });
 }
 
 /* ============================================================
    VIEWS
    ============================================================ */
-const view = document.getElementById('view');
-const esc = s => String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-const go = h => { location.hash = h; };
+const view=document.getElementById('view');
+const esc=s=>String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const go=h=>{ location.hash=h; };
+const back=(to,label)=>`<div class="backbar"><button class="btn ghost small" data-go="${to}"><span class="arrow">&larr;</span>${label}</button></div>`;
 
 function render(){
-  const me = Store.me();
-  document.getElementById('who').textContent = me ? me.name : '';
-  document.getElementById('signout').hidden = !me;
-  if(!me){ return screenSignIn(); }
-  const [route, arg] = location.hash.slice(1).split('/');
-  if(me.role === 'teacher'){
-    if(route === 'student' && arg) return screenStudentDetail(arg);
-    if(route === 'write' && arg)   return screenWriteLesson(arg);
+  const me=Store.me();
+  document.getElementById('who').textContent=me?me.name:'';
+  document.getElementById('signout').hidden=!me;
+  if(!me) return screenSignIn();
+  const [route,arg]=location.hash.slice(1).split('/');
+  if(route==='reference') return screenReference(false);
+  if(me.role==='teacher'){
+    if(route==='student'&&arg) return screenStudentDetail(arg);
+    if(route==='write'&&arg)   return screenWriteLesson(arg);
     return screenTeacherHome();
   }
-  if(route === 'notes') return screenStudentNotes();
+  if(route==='notes') return screenStudentNotes();
+  if(!Store.seenRef()) return screenReference(true);
   return screenStudentHome();
 }
 
 function screenSignIn(){
-  view.innerHTML = `
+  view.innerHTML=`
     <h2>Practice does not happen in the lesson.</h2>
-    <p class="sub">It happens in the six days afterwards, when nobody is there to ask. This carries the lesson home.</p>
-    <div class="card">
-      <h3>Try it as a student</h3>
-      <p>See what a beginner opens on a Tuesday night: this week's practice, the chord shapes, and a way to say what felt hard.</p>
-    </div>
-    <button class="btn wide" data-as="s3">Open as Wei Lin, two weeks in</button>
-    <div class="card" style="margin-top:1.5rem">
-      <h3>Try it as the teacher</h3>
-      <p>See the other side: what three students actually practised this week, and which items they keep flagging.</p>
-    </div>
-    <button class="btn ghost wide" data-as="t1">Open as the teacher</button>`;
-  view.querySelectorAll('[data-as]').forEach(b =>
-    b.onclick = () => { Store.signInAs(b.dataset.as); go(''); render(); });
+    <p class="sub">It happens in the six days afterwards, when nobody is there to ask.</p>
+    <div class="card"><p>Open it as a two-week beginner to see what she gets on a Tuesday night, or as the teacher to see what came back.</p></div>
+    <div class="stack">
+      <button class="btn wide" data-as="s3">Open as Wei Lin, two weeks in</button>
+      <button class="btn ghost wide" data-as="t1">Open as the teacher</button>
+    </div>`;
+  view.querySelectorAll('[data-as]').forEach(b=>b.onclick=()=>{Store.signInAs(b.dataset.as);go('');render();});
 }
 
+/* ---------- orientation ---------- */
+function handSVG(){
+  const tips=[{x:36,y:46,n:1},{x:57,y:35,n:2},{x:78,y:41,n:3},{x:97,y:58,n:4}];
+  let s=`<svg width="150" height="146" viewBox="0 0 150 146" role="img" aria-label="Fretting hand with fingers numbered one to four">`;
+  s+=`<path d="M28 102 Q21 76 33 62 L33 52 Q33 44 41 44 Q49 44 49 52 L49 46 Q49 36 57 36 Q65 36 65 46 L65 48 Q65 38 73 38 Q81 38 81 48 L81 56 Q85 46 93 50 Q100 54 97 64 L93 88 Q91 110 71 118 Q44 126 28 102 Z"
+       fill="#2e241c" stroke="rgba(236,226,210,.42)" stroke-width="1.5" stroke-linejoin="round"/>`;
+  s+=`<path d="M28 102 Q13 94 15 81 Q17 70 28 75" fill="#2e241c" stroke="rgba(236,226,210,.42)" stroke-width="1.5"/>`;
+  s+=`<text x="16" y="112" fill="#9b8f80" font-size="9" font-family="Familjen Grotesk,sans-serif">thumb</text>`;
+  tips.forEach(p=>{
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="9.5" fill="#c99248"/>`;
+    s+=`<text x="${p.x}" y="${p.y+4}" text-anchor="middle" fill="#221a14" font-size="11" font-weight="700" font-family="Familjen Grotesk,sans-serif">${p.n}</text>`;
+  });
+  return s+`</svg>`;
+}
+
+function stringsSVG(){
+  let s=`<svg width="256" height="160" viewBox="0 0 256 160" role="img" aria-label="The six strings and their numbers">`;
+  for(let row=0;row<6;row++){
+    const idx=5-row;                 // top row is the 1st string, the thinnest
+    const y=18+row*22;
+    const thick=0.7+row*0.45;
+    s+=`<line x1="56" y1="${y}" x2="212" y2="${y}" stroke="rgba(236,226,210,.6)" stroke-width="${thick}"/>`;
+    s+=`<text x="48" y="${y+4}" text-anchor="end" fill="#ece2d2" font-size="11" font-weight="600" font-family="Familjen Grotesk,sans-serif">${STRING_LABEL[idx]}</text>`;
+    s+=`<text x="220" y="${y+4}" fill="#9b8f80" font-size="10" font-family="Familjen Grotesk,sans-serif">${STRING_NOTE[idx]}</text>`;
+  }
+  s+=`<text x="56" y="${18+6*22+6}" fill="#9b8f80" font-size="10" font-family="Familjen Grotesk,sans-serif">thinnest at the top, thickest at the bottom</text>`;
+  return s+`</svg>`;
+}
+
+function screenReference(firstTime){
+  const me=Store.me();
+  view.innerHTML=`
+    ${firstTime?'':back('', me.role==='teacher'?'Back to students':'Back to this week')}
+    <h2>Before you start</h2>
+    <p class="sub">Three things worth knowing. They make everything else readable.</p>
+
+    <div class="ref">
+      <p class="eyebrow" style="margin-top:0">Your fingers are numbered</p>
+      ${handSVG()}
+      <p>This is your fretting hand. 1 is your index finger, 2 the middle, 3 the ring, 4 the little one. Your thumb sits behind the neck and never gets a number.</p>
+    </div>
+
+    <div class="ref">
+      <p class="eyebrow">So are your strings</p>
+      ${stringsSVG()}
+      <p>The thinnest string is the 1st. The thickest is the 6th. This catches everyone out, because the 1st string is the one closest to the floor while you are holding the guitar.</p>
+      <p>Learning these six names means you can tell your teacher exactly which string is buzzing, instead of "the one near the bottom".</p>
+    </div>
+
+    <div class="ref">
+      <p class="eyebrow">How to read a chord box</p>
+      ${chordCard('Am')}
+      <div class="legend">
+        <div><span class="key" style="color:var(--bronze)">2</span><span>Filled dot with a number: press here, with that finger.</span></div>
+        <div><span class="key" style="color:var(--bone-dim)">&#9711;</span><span>Hollow circle above the box: play the string, press nothing.</span></div>
+        <div><span class="key" style="color:var(--bone-dim)">&#215;</span><span>Cross above the box: do not play that string at all.</span></div>
+      </div>
+      <p style="margin-top:1rem">The thick line across the top is the nut, the strip at the end of the neck. The vertical lines are the strings, thickest on the left, exactly as they look when you glance down at the guitar.</p>
+      <p>Try the three buttons. Hear it plays the chord, string by string plays one at a time so you can find a dead string, and show me how places the fingers in order.</p>
+    </div>
+
+    <div class="stack">
+      ${firstTime?`<button class="btn wide" id="gotit">Got it, take me to my practice</button>`
+                 :`<button class="btn ghost wide" data-go=""><span class="arrow">&larr;</span>Back</button>`}
+    </div>`;
+  wireChords(view); wireGo();
+  const g=view.querySelector('#gotit');
+  if(g) g.onclick=()=>{ Store.markRef(); go(''); render(); };
+}
+
+/* ---------- teacher ---------- */
 function screenTeacherHome(){
-  const students = Store.students(Store.me().id);
-  view.innerHTML = `
+  const students=Store.students(Store.me().id);
+  view.innerHTML=`
     <h2>Your students</h2>
     <p class="sub">Flagged items are what they struggled with since the last lesson.</p>
     ${students.map(s=>{
-      const logs = Store.logsFor(s.id).filter(l=>l.feel==='hard');
-      const n = new Set(logs.map(l=>l.itemId)).size;
+      const n=new Set(Store.logsFor(s.id).filter(l=>l.feel==='hard').map(l=>l.itemId)).size;
       return `<button class="row" data-go="student/${s.id}">
-        <span class="grow">
-          <span class="name">${esc(s.name)}</span>
-          <span class="note">Started ${esc(s.started)}</span>
-        </span>
-        ${n ? `<span class="pill hard">${n} flagged</span>` : `<span class="pill ok">on track</span>`}
-        <span class="chev">&rsaquo;</span>
-      </button>`;
-    }).join('')}`;
+        <span class="grow"><span class="name">${esc(s.name)}</span><span class="note">Started ${esc(s.started)}</span></span>
+        ${n?`<span class="pill hard">${n} flagged</span>`:`<span class="pill ok">on track</span>`}
+        <span class="arrow">&rarr;</span></button>`;
+    }).join('')}
+    <div class="stack">
+      <button class="btn ghost wide" data-go="reference">See the page students get first</button>
+    </div>`;
   wireGo();
 }
 
 function screenStudentDetail(id){
-  const s = Store.data.users[id];
-  if(!s) return go('');
-  const lessons = Store.lessonsFor(id);
-  const logs = Store.logsFor(id);
-  const items = {};
-  lessons.forEach(l => l.items.forEach(i => items[i.id] = i));
+  const s=Store.data.users[id]; if(!s) return go('');
+  const lessons=Store.lessonsFor(id), logs=Store.logsFor(id);
+  const items={}; lessons.forEach(l=>l.items.forEach(i=>items[i.id]=i));
+  const trouble=Object.entries(logs.filter(l=>l.feel==='hard')
+    .reduce((a,l)=>{a[l.itemId]=(a[l.itemId]||0)+1;return a;},{})).sort((a,b)=>b[1]-a[1]);
+  const notes=logs.filter(l=>l.note).slice(-4).reverse();
 
-  const trouble = Object.entries(
-    logs.filter(l=>l.feel==='hard').reduce((a,l)=>{ a[l.itemId]=(a[l.itemId]||0)+1; return a; },{})
-  ).sort((a,b)=>b[1]-a[1]);
-
-  const notes = logs.filter(l=>l.note).slice(-4).reverse();
-
-  view.innerHTML = `
-    <button class="backlink" data-go="">Back to students</button>
+  view.innerHTML=`
+    ${back('','Back to students')}
     <h2>${esc(s.name)}</h2>
     <p class="sub">${logs.length} practice check-ins logged</p>
-
-    <p class="eyebrow">What to work on next lesson</p>
-    ${trouble.length ? trouble.map(([itemId,count])=>`
-      <div class="row" style="cursor:default">
-        <span class="grow">
-          <span class="name">${esc(items[itemId]?.title || 'Removed item')}</span>
-          <span class="note">Flagged as hard ${count} ${count===1?'time':'times'}</span>
-        </span>
-      </div>`).join('')
-      : `<div class="empty"><strong>Nothing flagged yet.</strong>Either it is going well or they have not logged since the last lesson.</div>`}
-
-    ${notes.length ? `<p class="eyebrow" style="margin-top:2rem">In their words</p>
-      ${notes.map(n=>`<div class="card"><p>&ldquo;${esc(n.note)}&rdquo;</p></div>`).join('')}` : ''}
-
-    <p class="eyebrow" style="margin-top:2rem">Lesson history</p>
-    ${lessons.map(l=>`
-      <div class="row" style="cursor:default">
-        <span class="grow">
-          <span class="name">${esc(l.date)}</span>
-          <span class="note">${l.items.length} practice items</span>
-        </span>
-      </div>`).join('')}
-
+    <p class="eyebrow" style="margin-top:0">What to work on next lesson</p>
+    ${trouble.length?trouble.map(([k,n])=>`
+      <div class="row static"><span class="grow">
+        <span class="name">${esc(items[k]?.title||'Removed item')}</span>
+        <span class="note">Flagged as hard ${n} ${n===1?'time':'times'}</span></span></div>`).join('')
+      :`<div class="empty"><strong>Nothing flagged yet.</strong>Either it is going well, or they have not logged since the lesson.</div>`}
+    ${notes.length?`<p class="eyebrow">In their words</p>
+      ${notes.map(n=>`<div class="card"><p>&ldquo;${esc(n.note)}&rdquo;</p></div>`).join('')}`:''}
+    <p class="eyebrow">Lesson history</p>
+    ${lessons.map(l=>`<div class="row static"><span class="grow">
+      <span class="name">${esc(l.date)}</span><span class="note">${l.items.length} practice items</span></span></div>`).join('')}
     <div class="stack">
       <button class="btn wide" data-go="write/${id}">Write this week's lesson note</button>
     </div>`;
@@ -444,145 +581,130 @@ function screenStudentDetail(id){
 }
 
 function screenWriteLesson(studentId){
-  const s = Store.data.users[studentId];
-  let items = [{title:'',detail:'',chord:''}];
-
-  const paint = () => {
-    view.innerHTML = `
-      <button class="backlink" data-go="student/${studentId}">Cancel</button>
+  const s=Store.data.users[studentId];
+  let items=[{title:'',detail:'',chord:''}];
+  const paint=()=>{
+    view.innerHTML=`
+      ${back('student/'+studentId,'Cancel')}
       <h2>Lesson note for ${esc(s.name)}</h2>
-      <p class="sub">They will open this on their phone with a guitar in their hands. Short lines.</p>
+      <p class="sub">They open this with a guitar in their hands. Keep the lines short.</p>
       <label for="summary">What you covered</label>
-      <textarea id="summary" placeholder="Two or three sentences. What went well and what to expect this week."></textarea>
-      <p class="eyebrow" style="margin-top:2rem">Practice items</p>
-      ${items.map((it,idx)=>`
+      <textarea id="summary" placeholder="Two or three sentences. What went well, what to expect this week."></textarea>
+      <p class="eyebrow">Practice items</p>
+      ${items.map((it,i)=>`
         <div class="item">
-          <label for="t${idx}">Item ${idx+1}</label>
-          <input type="text" id="t${idx}" data-f="title" data-i="${idx}" value="${esc(it.title)}" placeholder="Em to Am, slowly">
-          <label for="d${idx}">How to practise it</label>
-          <input type="text" id="d${idx}" data-f="detail" data-i="${idx}" value="${esc(it.detail)}" placeholder="Four beats each. Metronome at 60.">
-          <label for="c${idx}">Chord diagram, if useful</label>
-          <select id="c${idx}" data-f="chord" data-i="${idx}">
+          <label for="t${i}">Item ${i+1}</label>
+          <input type="text" id="t${i}" data-f="title" data-i="${i}" value="${esc(it.title)}" placeholder="Em to Am, slowly">
+          <label for="d${i}">How to practise it</label>
+          <input type="text" id="d${i}" data-f="detail" data-i="${i}" value="${esc(it.detail)}" placeholder="Four beats each. Metronome at 60.">
+          <label for="c${i}">Chord diagram, if useful</label>
+          <select id="c${i}" data-f="chord" data-i="${i}">
             <option value="">None</option>
             ${Object.keys(CHORDS).map(c=>`<option value="${c}" ${it.chord===c?'selected':''}>${c}</option>`).join('')}
           </select>
-          ${it.chord ? `<div class="chordwrap">${chordSVG(it.chord)}</div>` : ''}
+          ${it.chord?chordCard(it.chord):''}
         </div>`).join('')}
       <div class="stack">
         <button class="btn ghost wide" id="additem">Add another item</button>
         <button class="btn wide" id="send">Send to ${esc(s.name)}</button>
       </div>`;
-
-    view.querySelectorAll('[data-f]').forEach(el => {
-      el.oninput = el.onchange = e => {
-        items[+el.dataset.i][el.dataset.f] = el.value;
-        if(el.dataset.f === 'chord') paint();
-      };
+    view.querySelectorAll('[data-f]').forEach(el=>{
+      el.oninput=el.onchange=()=>{ items[+el.dataset.i][el.dataset.f]=el.value; if(el.dataset.f==='chord') paint(); };
     });
-    view.querySelector('#additem').onclick = () => { items.push({title:'',detail:'',chord:''}); paint(); };
-    view.querySelector('#send').onclick = () => {
-      const clean = items.filter(i=>i.title.trim()).map((i,n)=>({...i,id:'i'+Date.now()+n}));
+    view.querySelector('#additem').onclick=()=>{items.push({title:'',detail:'',chord:''});paint();};
+    view.querySelector('#send').onclick=()=>{
+      const clean=items.filter(i=>i.title.trim()).map((i,n)=>({...i,id:'i'+Date.now()+n}));
       if(!clean.length) return alert('Add at least one practice item.');
-      Store.addLesson({
-        studentId,
-        date:new Date().toISOString().slice(0,10),
-        summary:view.querySelector('#summary').value,
-        items:clean,
-      });
+      Store.addLesson({studentId,date:new Date().toISOString().slice(0,10),
+        summary:view.querySelector('#summary').value,items:clean});
       go('student/'+studentId);
     };
-    wireGo();
+    wireChords(view); wireGo();
   };
   paint();
 }
 
+/* ---------- student ---------- */
 function screenStudentHome(){
-  const me = Store.me();
-  const lesson = Store.latestLesson(me.id);
-  const today = new Date().toISOString().slice(0,10);
-  const logs = Store.logsFor(me.id);
+  const me=Store.me(), lesson=Store.latestLesson(me.id);
+  const today=new Date().toISOString().slice(0,10), logs=Store.logsFor(me.id);
+  if(!lesson){ view.innerHTML=`<div class="empty"><strong>Nothing here yet.</strong>Your teacher has not sent a lesson note.</div>`; return; }
 
-  if(!lesson){
-    view.innerHTML = `<div class="empty"><strong>Nothing here yet.</strong>Your teacher has not sent a lesson note.</div>`;
-    return;
-  }
-
-  const days = [...Array(7)].map((_,n)=>{
-    const d = new Date(Date.now()-(6-n)*864e5).toISOString().slice(0,10);
-    return {label:['S','M','T','W','T','F','S'][new Date(d).getDay()], on:logs.some(l=>l.date===d)};
+  const days=[...Array(7)].map((_,n)=>{
+    const dt=new Date(Date.now()-(6-n)*864e5), d=dt.toISOString().slice(0,10);
+    return {num:dt.getDate(),label:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()][0],
+            on:logs.some(l=>l.date===d),today:d===today};
   });
+  const count=days.filter(d=>d.on).length;
 
-  view.innerHTML = `
+  view.innerHTML=`
     <h2>This week</h2>
     <p class="sub">From your lesson on ${esc(lesson.date)}</p>
-    <div class="streak">${days.map(d=>`<i class="${d.on?'on':''}">${d.label}</i>`).join('')}</div>
+    <figure class="week">
+      <div class="days">${days.map(d=>`<div class="day ${d.on?'on':''} ${d.today?'today':''}">
+        <div class="dot"></div><div class="lbl">${d.label}<br>${d.num}</div></div>`).join('')}</div>
+      <figcaption>The last seven days. A filled mark is a day you logged something. ${count?`${count} so far.`:'Nothing logged yet &mdash; today is a fine place to start.'}</figcaption>
+    </figure>
     <div class="card"><p>${esc(lesson.summary)}</p></div>
     ${lesson.items.map(it=>{
-      const log = logs.find(l=>l.itemId===it.id && l.date===today);
+      const log=logs.find(l=>l.itemId===it.id&&l.date===today);
       return `<div class="item">
         <div class="title">${esc(it.title)}</div>
         <div class="detail">${esc(it.detail)}</div>
-        ${it.chord ? `<figure class="chordwrap">${chordSVG(it.chord)}<figcaption>Numbers are which finger. The circles on top mean play that string open, the crosses mean skip it.</figcaption></figure>` : ''}
+        ${it.chord?chordCard(it.chord):''}
         <div class="feels" data-item="${it.id}">
-          ${['easy','ok','hard'].map(f=>`
-            <button class="feel" data-feel="${f}" aria-pressed="${log&&log.feel===f}">
-              ${f==='easy'?'Got it':f==='ok'?'Getting there':'Struggling'}
-            </button>`).join('')}
+          ${['easy','ok','hard'].map(f=>`<button class="feel" data-feel="${f}" aria-pressed="${!!(log&&log.feel===f)}">
+            ${f==='easy'?'Got it':f==='ok'?'Getting there':'Struggling'}</button>`).join('')}
         </div>
-        ${log&&log.feel==='hard' ? `
+        ${log&&log.feel==='hard'?`
           <label for="n${it.id}">What is going wrong? Your teacher sees this.</label>
-          <input type="text" id="n${it.id}" data-note="${it.id}" value="${esc(log.note)}" placeholder="my first string keeps buzzing">` : ''}
+          <input type="text" id="n${it.id}" data-note="${it.id}" value="${esc(log.note)}" placeholder="my 2nd string keeps buzzing">`:''}
       </div>`;
     }).join('')}
     <div class="stack">
+      <button class="btn ghost wide" data-go="reference">Fingers and strings, explained</button>
       <button class="btn ghost wide" data-go="notes">Earlier lesson notes</button>
     </div>`;
 
   view.querySelectorAll('.feels').forEach(g=>{
-    g.querySelectorAll('.feel').forEach(b=>{
-      b.onclick = () => {
-        const old = Store.logsFor(me.id).find(l=>l.itemId===g.dataset.item && l.date===today);
-        Store.logPractice(me.id, g.dataset.item, b.dataset.feel, old ? old.note : '');
-        screenStudentHome();
-      };
+    g.querySelectorAll('.feel').forEach(b=>b.onclick=()=>{
+      const old=Store.logsFor(me.id).find(l=>l.itemId===g.dataset.item&&l.date===today);
+      Store.logPractice(me.id,g.dataset.item,b.dataset.feel,old?old.note:'');
+      screenStudentHome();
     });
   });
-  view.querySelectorAll('[data-note]').forEach(inp=>{
-    inp.onchange = () => Store.logPractice(me.id, inp.dataset.note, 'hard', inp.value);
-  });
-  wireGo();
+  view.querySelectorAll('[data-note]').forEach(i=>i.onchange=()=>Store.logPractice(me.id,i.dataset.note,'hard',i.value));
+  wireChords(view); wireGo();
 }
 
 function screenStudentNotes(){
-  const lessons = Store.lessonsFor(Store.me().id);
-  view.innerHTML = `
-    <button class="backlink" data-go="">Back to this week</button>
+  const lessons=Store.lessonsFor(Store.me().id);
+  view.innerHTML=`
+    ${back('','Back to this week')}
     <h2>Lesson notes</h2>
     <p class="sub">Everything your teacher has sent.</p>
-    ${lessons.map(l=>`
-      <div class="item">
-        <div class="title">${esc(l.date)}</div>
-        <div class="detail">${esc(l.summary)}</div>
-        ${l.items.map(i=>`<div style="margin-top:.6rem"><strong style="font-weight:600">${esc(i.title)}</strong><div class="detail">${esc(i.detail)}</div>${i.chord?`<div class="chordwrap">${chordSVG(i.chord,.85)}</div>`:''}</div>`).join('')}
-      </div>`).join('')}`;
-  wireGo();
+    ${lessons.map(l=>`<div class="item">
+      <div class="title">${esc(l.date)}</div>
+      <div class="detail">${esc(l.summary)}</div>
+      ${l.items.map(i=>`<div style="margin-top:.9rem">
+        <strong style="font-weight:600">${esc(i.title)}</strong>
+        <div class="detail">${esc(i.detail)}</div>
+        ${i.chord?chordCard(i.chord):''}</div>`).join('')}
+    </div>`).join('')}`;
+  wireChords(view); wireGo();
 }
 
-function wireGo(){
-  view.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { go(b.dataset.go); render(); });
-}
+function wireGo(){ view.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{go(b.dataset.go);render();}); }
 
-/* ============================================================
-   BOOT
-   ============================================================ */
-document.getElementById('signout').onclick = () => { Store.signOut(); go(''); render(); };
-window.addEventListener('hashchange', render);
+/* ============================================================ */
+document.getElementById('signout').onclick=()=>{Store.signOut();go('');render();};
+window.addEventListener('hashchange',render);
 
 await Store.init();
 if(!Store.live){
-  document.getElementById('banner').innerHTML =
-    `<div class="banner"><b>Demo</b> &nbsp;Sample data, saved on this device only. <button class="iconbtn" id="reset">Reset</button></div>`;
-  document.getElementById('reset').onclick = () => Store.reset();
+  document.getElementById('banner').innerHTML=
+    `<div class="banner"><span><b>Demo</b> &nbsp;Sample data, this device only.</span><button class="btn ghost small" id="reset">Reset</button></div>`;
+  document.getElementById('reset').onclick=()=>Store.reset();
 }
 render();
 </script>
