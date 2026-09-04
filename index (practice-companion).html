@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Practice Companion</title>
+<meta name="description" content="Carries a music lesson home with the student.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wood:#221a14;
+  --wood-2:#2e241c;
+  --wood-3:#3a2e24;
+  --bone:#ece2d2;
+  --bone-dim:#9b8f80;
+  --bronze:#c99248;
+  --sage:#7fa07a;
+  --flag:#c05a45;
+  --line:rgba(236,226,210,.13);
+  --tap:2.75rem;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--wood);color:var(--bone);
+  font-family:"Familjen Grotesk",system-ui,-apple-system,sans-serif;
+  font-size:1rem;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea,select{font:inherit}
+::selection{background:var(--bronze);color:var(--wood)}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
+.app{max-width:34rem;margin-inline:auto;min-height:100dvh;display:flex;flex-direction:column}
+
+/* ---- top ---- */
+.bar{
+  display:flex;align-items:center;gap:.75rem;
+  padding:1rem 1.15rem .85rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--wood);z-index:10;
+}
+.bar h1{font-size:1.02rem;font-weight:700;letter-spacing:-.015em;margin:0;flex:1}
+.bar .who{font-size:.8rem;color:var(--bone-dim)}
+.iconbtn{
+  background:none;border:1px solid var(--line);border-radius:2px;
+  padding:.3rem .6rem;font-size:.8rem;color:var(--bone-dim);
+}
+.iconbtn:hover{color:var(--bone);border-color:var(--bone-dim)}
+
+main{flex:1;padding:1.15rem 1.15rem 4rem}
+
+/* ---- type ---- */
+h2{font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin:0 0 .3rem}
+h3{font-size:1rem;font-weight:600;margin:0 0 .3rem}
+.sub{color:var(--bone-dim);font-size:.9rem;margin:0 0 1.5rem}
+.eyebrow{color:var(--bronze);font-size:.82rem;font-weight:600;margin:0 0 .35rem}
+
+/* ---- buttons ---- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:var(--tap);padding:0 1.1rem;
+  background:var(--bronze);color:#241a10;border:0;border-radius:2px;
+  font-weight:600;font-size:.95rem;
+}
+.btn:hover{background:#dba556}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--bone)}
+.btn.ghost:hover{border-color:var(--bone-dim)}
+.btn.wide{width:100%}
+.btn[disabled]{opacity:.45;cursor:default}
+
+/* ---- lists ---- */
+.row{
+  display:flex;align-items:center;gap:.9rem;width:100%;
+  padding:.95rem 0;background:none;border:0;border-bottom:1px solid var(--line);
+  text-align:left;
+}
+.row:first-of-type{border-top:1px solid var(--line)}
+.row .grow{flex:1;min-width:0}
+.row .name{font-weight:600;font-size:1rem}
+.row .note{color:var(--bone-dim);font-size:.85rem;margin-top:.1rem}
+.row .chev{color:var(--bone-dim);font-size:1.1rem}
+.row:hover .name{color:var(--bronze)}
+
+.pill{
+  display:inline-block;font-size:.72rem;font-weight:600;
+  padding:.1rem .45rem;border:1px solid currentColor;border-radius:2px;
+}
+.pill.hard{color:var(--flag)}
+.pill.ok{color:var(--bone-dim)}
+.pill.easy{color:var(--sage)}
+
+/* ---- practice item ---- */
+.item{border-bottom:1px solid var(--line);padding:1.1rem 0}
+.item:first-of-type{border-top:1px solid var(--line)}
+.item .title{font-weight:600;margin-bottom:.15rem}
+.item .detail{color:var(--bone-dim);font-size:.9rem;margin-bottom:.75rem}
+.feels{display:flex;gap:.5rem;flex-wrap:wrap}
+.feel{
+  flex:1;min-width:5rem;min-height:var(--tap);
+  background:none;border:1px solid var(--line);border-radius:2px;
+  color:var(--bone-dim);font-size:.88rem;font-weight:600;
+}
+.feel:hover{border-color:var(--bone-dim);color:var(--bone)}
+.feel[aria-pressed="true"]{background:var(--wood-3);color:var(--bone);border-color:var(--bone-dim)}
+.feel[data-feel="easy"][aria-pressed="true"]{color:var(--sage);border-color:var(--sage)}
+.feel[data-feel="hard"][aria-pressed="true"]{color:var(--flag);border-color:var(--flag)}
+
+/* ---- chord ---- */
+.chordwrap{display:flex;gap:1.1rem;align-items:flex-start;margin:.5rem 0 .9rem}
+.chordwrap figcaption{font-size:.85rem;color:var(--bone-dim);padding-top:.4rem}
+svg.chord{background:var(--wood-2);border:1px solid var(--line);border-radius:2px;flex:none}
+
+/* ---- forms ---- */
+label{display:block;font-size:.85rem;color:var(--bone-dim);margin:1rem 0 .3rem;font-weight:500}
+input[type=text],input[type=email],input[type=password],textarea,select{
+  width:100%;min-height:var(--tap);padding:.6rem .75rem;
+  background:var(--wood-2);color:var(--bone);
+  border:1px solid var(--line);border-radius:2px;
+}
+textarea{min-height:5rem;resize:vertical;line-height:1.5}
+input:focus,textarea:focus,select:focus{border-color:var(--bronze);outline:none}
+
+.card{background:var(--wood-2);border:1px solid var(--line);padding:1rem;margin-bottom:1rem}
+.card h3{margin-bottom:.4rem}
+.card p{margin:0;color:var(--bone-dim);font-size:.9rem}
+
+.empty{padding:2.5rem 0;color:var(--bone-dim);font-size:.95rem}
+.empty strong{display:block;color:var(--bone);font-weight:600;margin-bottom:.3rem}
+
+.banner{
+  background:var(--wood-2);border-bottom:1px solid var(--line);
+  padding:.55rem 1.15rem;font-size:.8rem;color:var(--bone-dim);text-align:center;
+}
+.banner b{color:var(--bronze);font-weight:600}
+
+.streak{display:flex;gap:.4rem;margin:.6rem 0 1.5rem}
+.streak i{
+  flex:1;height:2.4rem;background:var(--wood-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-style:normal;font-size:.7rem;color:var(--bone-dim);
+}
+.streak i.on{background:var(--wood-3);border-color:var(--bronze);color:var(--bronze)}
+
+.stack{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem}
+.backlink{
+  background:none;border:0;padding:0;color:var(--bronze);
+  font-weight:600;font-size:.9rem;margin-bottom:1.1rem;
+}
+.backlink:hover{color:var(--bone)}
+
+.builder{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
+.fingerpick{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem}
+.fingerpick button{
+  width:2.2rem;height:2.2rem;background:var(--wood-2);
+  border:1px solid var(--line);border-radius:50%;font-size:.85rem;font-weight:600;
+}
+.fingerpick button[aria-pressed="true"]{background:var(--bronze);color:var(--wood);border-color:var(--bronze)}
+@media(max-width:26rem){ .builder{grid-template-columns:1fr} }
+@media(prefers-reduced-motion:no-preference){
+  .row,.feel,.btn{transition:color .12s ease,border-color .12s ease,background .12s ease}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div id="banner"></div>
+  <div class="bar">
+    <h1>Practice Companion</h1>
+    <span class="who" id="who"></span>
+    <button class="iconbtn" id="signout" hidden>Sign out</button>
+  </div>
+  <main id="view"></main>
+</div>
+
+<script type="module">
+/* ============================================================
+   CONFIG
+   Leave as null to run on demo data with no setup.
+   To go live: paste your Firebase config object here.
+   ============================================================ */
+const FIREBASE_CONFIG = null;
+
+/* ============================================================
+   CHORD LIBRARY
+   frets: one entry per string, low E first. -1 = don't play, 0 = open
+   fingers: which finger presses it. 0 = none
+   ============================================================ */
+const CHORDS = {
+  Em:  {frets:[0,2,2,0,0,0],  fingers:[0,2,3,0,0,0]},
+  Am:  {frets:[-1,0,2,2,1,0], fingers:[0,0,2,3,1,0]},
+  D:   {frets:[-1,-1,0,2,3,2],fingers:[0,0,0,1,3,2]},
+  G:   {frets:[3,2,0,0,0,3],  fingers:[3,2,0,0,0,4]},
+  C:   {frets:[-1,3,2,0,1,0], fingers:[0,3,2,0,1,0]},
+  E:   {frets:[0,2,2,1,0,0],  fingers:[0,3,4,1,0,0]},
+  A:   {frets:[-1,0,2,2,2,0], fingers:[0,0,1,2,3,0]},
+  Dm:  {frets:[-1,-1,0,2,3,1],fingers:[0,0,0,2,3,1]},
+};
+
+/* ============================================================
+   DEMO DATA
+   ============================================================ */
+function demoSeed(){
+  const day = d => new Date(Date.now() - d*864e5).toISOString().slice(0,10);
+  return {
+    users:{
+      t1:{id:'t1',role:'teacher',name:'Jared'},
+      s1:{id:'s1',role:'student',name:'Marcus',teacherId:'t1',started:'6 weeks ago'},
+      s2:{id:'s2',role:'student',name:'Priya',teacherId:'t1',started:'3 months ago'},
+      s3:{id:'s3',role:'student',name:'Wei Lin',teacherId:'t1',started:'2 weeks ago'},
+    },
+    lessons:[
+      {id:'l1',studentId:'s3',date:day(4),summary:
+        'First proper chord shapes. Fingertips are going to hurt this week and that is normal. Five minutes at a time, stop before it stings.',
+       items:[
+        {id:'i1',title:'Em, hold and release',detail:'Place it, strum once, take your hand off. Twenty times.',chord:'Em'},
+        {id:'i2',title:'Am, hold and release',detail:'Same thing. Check the first string is ringing clear.',chord:'Am'},
+        {id:'i3',title:'Fingertip conditioning',detail:'Five minutes maximum per session. Two sessions a day beats one long one.'},
+       ]},
+      {id:'l2',studentId:'s1',date:day(3),summary:
+        'Changing between chords is the whole game now. Speed comes later, accuracy first.',
+       items:[
+        {id:'i4',title:'Em to Am, slowly',detail:'Four beats on each. Metronome at 60.',chord:'Am'},
+        {id:'i5',title:'D chord, one string at a time',detail:'Play each string on its own and find the buzzing one.',chord:'D'},
+        {id:'i6',title:'Down-strums on the beat',detail:'Just Em. Keep your wrist loose.'},
+       ]},
+      {id:'l3',studentId:'s2',date:day(6),summary:
+        'You are ready for full songs. G is the last shape you need for most of them.',
+       items:[
+        {id:'i7',title:'G chord shape',detail:'Fourth finger on the first string. It will feel wrong for a week.',chord:'G'},
+        {id:'i8',title:'C to G change',detail:'The trick is the third finger barely moves.',chord:'C'},
+       ]},
+    ],
+    logs:[
+      {id:'g1',studentId:'s3',itemId:'i1',date:day(3),feel:'ok',note:''},
+      {id:'g2',studentId:'s3',itemId:'i2',date:day(3),feel:'hard',note:'my first string keeps buzzing'},
+      {id:'g3',studentId:'s3',itemId:'i3',date:day(3),feel:'hard',note:'fingers really sore'},
+      {id:'g4',studentId:'s3',itemId:'i1',date:day(2),feel:'easy',note:''},
+      {id:'g5',studentId:'s3',itemId:'i2',date:day(2),feel:'hard',note:'still buzzing'},
+      {id:'g6',studentId:'s1',itemId:'i4',date:day(2),feel:'ok',note:''},
+      {id:'g7',studentId:'s1',itemId:'i5',date:day(2),feel:'hard',note:'third string is dead'},
+      {id:'g8',studentId:'s1',itemId:'i5',date:day(1),feel:'hard',note:''},
+      {id:'g9',studentId:'s1',itemId:'i6',date:day(1),feel:'easy',note:''},
+      {id:'g10',studentId:'s2',itemId:'i7',date:day(2),feel:'ok',note:''},
+    ],
+  };
+}
+
+/* ============================================================
+   STORE
+   Demo mode keeps everything in localStorage.
+   Firebase mode is wired to the same method names.
+   ============================================================ */
+const KEY = 'practice-companion-demo';
+
+const Store = {
+  live:false, data:null, uid:null,
+
+  async init(){
+    if(FIREBASE_CONFIG){ await this.initFirebase(); return; }
+    const saved = localStorage.getItem(KEY);
+    this.data = saved ? JSON.parse(saved) : demoSeed();
+    this.uid = localStorage.getItem(KEY+'-uid');
+  },
+  async initFirebase(){
+    const app = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const auth = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const fs   = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    this.fb = {app:app.initializeApp(FIREBASE_CONFIG)};
+    this.fb.auth = auth.getAuth(this.fb.app);
+    this.fb.db = fs.getFirestore(this.fb.app);
+    this.fb.mod = {auth, fs};
+    this.live = true;
+  },
+  save(){ if(!this.live) localStorage.setItem(KEY, JSON.stringify(this.data)); },
+
+  me(){ return this.data.users[this.uid] || null; },
+  signInAs(id){ this.uid = id; localStorage.setItem(KEY+'-uid', id); },
+  signOut(){ this.uid = null; localStorage.removeItem(KEY+'-uid'); },
+
+  students(teacherId){
+    return Object.values(this.data.users).filter(u => u.role==='student' && u.teacherId===teacherId);
+  },
+  lessonsFor(studentId){
+    return this.data.lessons.filter(l => l.studentId===studentId)
+      .sort((a,b)=> b.date.localeCompare(a.date));
+  },
+  latestLesson(studentId){ return this.lessonsFor(studentId)[0] || null; },
+  logsFor(studentId){ return this.data.logs.filter(l => l.studentId===studentId); },
+
+  logPractice(studentId,itemId,feel,note){
+    const today = new Date().toISOString().slice(0,10);
+    const found = this.data.logs.find(l=>l.studentId===studentId&&l.itemId===itemId&&l.date===today);
+    if(found){ found.feel=feel; found.note=note; }
+    else this.data.logs.push({id:'g'+Date.now(),studentId,itemId,date:today,feel,note});
+    this.save();
+  },
+  addLesson(lesson){
+    lesson.id = 'l'+Date.now();
+    this.data.lessons.push(lesson);
+    this.save();
+  },
+  reset(){ localStorage.removeItem(KEY); localStorage.removeItem(KEY+'-uid'); location.reload(); },
+};
+
+/* ============================================================
+   CHORD DIAGRAM
+   ============================================================ */
+function chordSVG(name, size=1){
+  const c = CHORDS[name];
+  if(!c) return '';
+  const W=104*size, H=124*size, padX=16*size, padY=26*size;
+  const stringGap=(W-padX*2)/5, fretGap=(H-padY-14*size)/4;
+  let s=`<svg class="chord" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${name} chord diagram">`;
+  s+=`<rect x="${padX}" y="${padY}" width="${W-padX*2}" height="${fretGap*4}" fill="none" stroke="rgba(236,226,210,.28)" stroke-width="1"/>`;
+  for(let f=1;f<4;f++)
+    s+=`<line x1="${padX}" y1="${padY+fretGap*f}" x2="${W-padX}" y2="${padY+fretGap*f}" stroke="rgba(236,226,210,.18)"/>`;
+  for(let n=1;n<5;n++)
+    s+=`<line x1="${padX+stringGap*n}" y1="${padY}" x2="${padX+stringGap*n}" y2="${padY+fretGap*4}" stroke="rgba(236,226,210,.18)"/>`;
+  s+=`<line x1="${padX}" y1="${padY}" x2="${W-padX}" y2="${padY}" stroke="#ece2d2" stroke-width="${3*size}"/>`;
+  c.frets.forEach((fret,i)=>{
+    const x=padX+stringGap*i;
+    if(fret===-1) s+=`<text x="${x}" y="${padY-8*size}" text-anchor="middle" fill="#9b8f80" font-size="${11*size}" font-family="Familjen Grotesk,sans-serif">&#215;</text>`;
+    else if(fret===0) s+=`<circle cx="${x}" cy="${padY-11*size}" r="${4*size}" fill="none" stroke="#9b8f80" stroke-width="1.4"/>`;
+    else{
+      const y=padY+fretGap*(fret-0.5);
+      s+=`<circle cx="${x}" cy="${y}" r="${8*size}" fill="#c99248"/>`;
+      const fg=c.fingers[i];
+      if(fg) s+=`<text x="${x}" y="${y+4*size}" text-anchor="middle" fill="#221a14" font-size="${10*size}" font-weight="700" font-family="Familjen Grotesk,sans-serif">${fg}</text>`;
+    }
+  });
+  s+=`<text x="${W/2}" y="${H-2*size}" text-anchor="middle" fill="#ece2d2" font-size="${12*size}" font-weight="600" font-family="Familjen Grotesk,sans-serif">${name}</text>`;
+  return s+'</svg>';
+}
+
+/* ============================================================
+   VIEWS
+   ============================================================ */
+const view = document.getElementById('view');
+const esc = s => String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const go = h => { location.hash = h; };
+
+function render(){
+  const me = Store.me();
+  document.getElementById('who').textContent = me ? me.name : '';
+  document.getElementById('signout').hidden = !me;
+  if(!me){ return screenSignIn(); }
+  const [route, arg] = location.hash.slice(1).split('/');
+  if(me.role === 'teacher'){
+    if(route === 'student' && arg) return screenStudentDetail(arg);
+    if(route === 'write' && arg)   return screenWriteLesson(arg);
+    return screenTeacherHome();
+  }
+  if(route === 'notes') return screenStudentNotes();
+  return screenStudentHome();
+}
+
+function screenSignIn(){
+  view.innerHTML = `
+    <h2>Practice does not happen in the lesson.</h2>
+    <p class="sub">It happens in the six days afterwards, when nobody is there to ask. This carries the lesson home.</p>
+    <div class="card">
+      <h3>Try it as a student</h3>
+      <p>See what a beginner opens on a Tuesday night: this week's practice, the chord shapes, and a way to say what felt hard.</p>
+    </div>
+    <button class="btn wide" data-as="s3">Open as Wei Lin, two weeks in</button>
+    <div class="card" style="margin-top:1.5rem">
+      <h3>Try it as the teacher</h3>
+      <p>See the other side: what three students actually practised this week, and which items they keep flagging.</p>
+    </div>
+    <button class="btn ghost wide" data-as="t1">Open as the teacher</button>`;
+  view.querySelectorAll('[data-as]').forEach(b =>
+    b.onclick = () => { Store.signInAs(b.dataset.as); go(''); render(); });
+}
+
+function screenTeacherHome(){
+  const students = Store.students(Store.me().id);
+  view.innerHTML = `
+    <h2>Your students</h2>
+    <p class="sub">Flagged items are what they struggled with since the last lesson.</p>
+    ${students.map(s=>{
+      const logs = Store.logsFor(s.id).filter(l=>l.feel==='hard');
+      const n = new Set(logs.map(l=>l.itemId)).size;
+      return `<button class="row" data-go="student/${s.id}">
+        <span class="grow">
+          <span class="name">${esc(s.name)}</span>
+          <span class="note">Started ${esc(s.started)}</span>
+        </span>
+        ${n ? `<span class="pill hard">${n} flagged</span>` : `<span class="pill ok">on track</span>`}
+        <span class="chev">&rsaquo;</span>
+      </button>`;
+    }).join('')}`;
+  wireGo();
+}
+
+function screenStudentDetail(id){
+  const s = Store.data.users[id];
+  if(!s) return go('');
+  const lessons = Store.lessonsFor(id);
+  const logs = Store.logsFor(id);
+  const items = {};
+  lessons.forEach(l => l.items.forEach(i => items[i.id] = i));
+
+  const trouble = Object.entries(
+    logs.filter(l=>l.feel==='hard').reduce((a,l)=>{ a[l.itemId]=(a[l.itemId]||0)+1; return a; },{})
+  ).sort((a,b)=>b[1]-a[1]);
+
+  const notes = logs.filter(l=>l.note).slice(-4).reverse();
+
+  view.innerHTML = `
+    <button class="backlink" data-go="">Back to students</button>
+    <h2>${esc(s.name)}</h2>
+    <p class="sub">${logs.length} practice check-ins logged</p>
+
+    <p class="eyebrow">What to work on next lesson</p>
+    ${trouble.length ? trouble.map(([itemId,count])=>`
+      <div class="row" style="cursor:default">
+        <span class="grow">
+          <span class="name">${esc(items[itemId]?.title || 'Removed item')}</span>
+          <span class="note">Flagged as hard ${count} ${count===1?'time':'times'}</span>
+        </span>
+      </div>`).join('')
+      : `<div class="empty"><strong>Nothing flagged yet.</strong>Either it is going well or they have not logged since the last lesson.</div>`}
+
+    ${notes.length ? `<p class="eyebrow" style="margin-top:2rem">In their words</p>
+      ${notes.map(n=>`<div class="card"><p>&ldquo;${esc(n.note)}&rdquo;</p></div>`).join('')}` : ''}
+
+    <p class="eyebrow" style="margin-top:2rem">Lesson history</p>
+    ${lessons.map(l=>`
+      <div class="row" style="cursor:default">
+        <span class="grow">
+          <span class="name">${esc(l.date)}</span>
+          <span class="note">${l.items.length} practice items</span>
+        </span>
+      </div>`).join('')}
+
+    <div class="stack">
+      <button class="btn wide" data-go="write/${id}">Write this week's lesson note</button>
+    </div>`;
+  wireGo();
+}
+
+function screenWriteLesson(studentId){
+  const s = Store.data.users[studentId];
+  let items = [{title:'',detail:'',chord:''}];
+
+  const paint = () => {
+    view.innerHTML = `
+      <button class="backlink" data-go="student/${studentId}">Cancel</button>
+      <h2>Lesson note for ${esc(s.name)}</h2>
+      <p class="sub">They will open this on their phone with a guitar in their hands. Short lines.</p>
+      <label for="summary">What you covered</label>
+      <textarea id="summary" placeholder="Two or three sentences. What went well and what to expect this week."></textarea>
+      <p class="eyebrow" style="margin-top:2rem">Practice items</p>
+      ${items.map((it,idx)=>`
+        <div class="item">
+          <label for="t${idx}">Item ${idx+1}</label>
+          <input type="text" id="t${idx}" data-f="title" data-i="${idx}" value="${esc(it.title)}" placeholder="Em to Am, slowly">
+          <label for="d${idx}">How to practise it</label>
+          <input type="text" id="d${idx}" data-f="detail" data-i="${idx}" value="${esc(it.detail)}" placeholder="Four beats each. Metronome at 60.">
+          <label for="c${idx}">Chord diagram, if useful</label>
+          <select id="c${idx}" data-f="chord" data-i="${idx}">
+            <option value="">None</option>
+            ${Object.keys(CHORDS).map(c=>`<option value="${c}" ${it.chord===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+          ${it.chord ? `<div class="chordwrap">${chordSVG(it.chord)}</div>` : ''}
+        </div>`).join('')}
+      <div class="stack">
+        <button class="btn ghost wide" id="additem">Add another item</button>
+        <button class="btn wide" id="send">Send to ${esc(s.name)}</button>
+      </div>`;
+
+    view.querySelectorAll('[data-f]').forEach(el => {
+      el.oninput = el.onchange = e => {
+        items[+el.dataset.i][el.dataset.f] = el.value;
+        if(el.dataset.f === 'chord') paint();
+      };
+    });
+    view.querySelector('#additem').onclick = () => { items.push({title:'',detail:'',chord:''}); paint(); };
+    view.querySelector('#send').onclick = () => {
+      const clean = items.filter(i=>i.title.trim()).map((i,n)=>({...i,id:'i'+Date.now()+n}));
+      if(!clean.length) return alert('Add at least one practice item.');
+      Store.addLesson({
+        studentId,
+        date:new Date().toISOString().slice(0,10),
+        summary:view.querySelector('#summary').value,
+        items:clean,
+      });
+      go('student/'+studentId);
+    };
+    wireGo();
+  };
+  paint();
+}
+
+function screenStudentHome(){
+  const me = Store.me();
+  const lesson = Store.latestLesson(me.id);
+  const today = new Date().toISOString().slice(0,10);
+  const logs = Store.logsFor(me.id);
+
+  if(!lesson){
+    view.innerHTML = `<div class="empty"><strong>Nothing here yet.</strong>Your teacher has not sent a lesson note.</div>`;
+    return;
+  }
+
+  const days = [...Array(7)].map((_,n)=>{
+    const d = new Date(Date.now()-(6-n)*864e5).toISOString().slice(0,10);
+    return {label:['S','M','T','W','T','F','S'][new Date(d).getDay()], on:logs.some(l=>l.date===d)};
+  });
+
+  view.innerHTML = `
+    <h2>This week</h2>
+    <p class="sub">From your lesson on ${esc(lesson.date)}</p>
+    <div class="streak">${days.map(d=>`<i class="${d.on?'on':''}">${d.label}</i>`).join('')}</div>
+    <div class="card"><p>${esc(lesson.summary)}</p></div>
+    ${lesson.items.map(it=>{
+      const log = logs.find(l=>l.itemId===it.id && l.date===today);
+      return `<div class="item">
+        <div class="title">${esc(it.title)}</div>
+        <div class="detail">${esc(it.detail)}</div>
+        ${it.chord ? `<figure class="chordwrap">${chordSVG(it.chord)}<figcaption>Numbers are which finger. The circles on top mean play that string open, the crosses mean skip it.</figcaption></figure>` : ''}
+        <div class="feels" data-item="${it.id}">
+          ${['easy','ok','hard'].map(f=>`
+            <button class="feel" data-feel="${f}" aria-pressed="${log&&log.feel===f}">
+              ${f==='easy'?'Got it':f==='ok'?'Getting there':'Struggling'}
+            </button>`).join('')}
+        </div>
+        ${log&&log.feel==='hard' ? `
+          <label for="n${it.id}">What is going wrong? Your teacher sees this.</label>
+          <input type="text" id="n${it.id}" data-note="${it.id}" value="${esc(log.note)}" placeholder="my first string keeps buzzing">` : ''}
+      </div>`;
+    }).join('')}
+    <div class="stack">
+      <button class="btn ghost wide" data-go="notes">Earlier lesson notes</button>
+    </div>`;
+
+  view.querySelectorAll('.feels').forEach(g=>{
+    g.querySelectorAll('.feel').forEach(b=>{
+      b.onclick = () => {
+        const old = Store.logsFor(me.id).find(l=>l.itemId===g.dataset.item && l.date===today);
+        Store.logPractice(me.id, g.dataset.item, b.dataset.feel, old ? old.note : '');
+        screenStudentHome();
+      };
+    });
+  });
+  view.querySelectorAll('[data-note]').forEach(inp=>{
+    inp.onchange = () => Store.logPractice(me.id, inp.dataset.note, 'hard', inp.value);
+  });
+  wireGo();
+}
+
+function screenStudentNotes(){
+  const lessons = Store.lessonsFor(Store.me().id);
+  view.innerHTML = `
+    <button class="backlink" data-go="">Back to this week</button>
+    <h2>Lesson notes</h2>
+    <p class="sub">Everything your teacher has sent.</p>
+    ${lessons.map(l=>`
+      <div class="item">
+        <div class="title">${esc(l.date)}</div>
+        <div class="detail">${esc(l.summary)}</div>
+        ${l.items.map(i=>`<div style="margin-top:.6rem"><strong style="font-weight:600">${esc(i.title)}</strong><div class="detail">${esc(i.detail)}</div>${i.chord?`<div class="chordwrap">${chordSVG(i.chord,.85)}</div>`:''}</div>`).join('')}
+      </div>`).join('')}`;
+  wireGo();
+}
+
+function wireGo(){
+  view.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { go(b.dataset.go); render(); });
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.getElementById('signout').onclick = () => { Store.signOut(); go(''); render(); };
+window.addEventListener('hashchange', render);
+
+await Store.init();
+if(!Store.live){
+  document.getElementById('banner').innerHTML =
+    `<div class="banner"><b>Demo</b> &nbsp;Sample data, saved on this device only. <button class="iconbtn" id="reset">Reset</button></div>`;
+  document.getElementById('reset').onclick = () => Store.reset();
+}
+render();
+</script>
+</body>
+</html>
